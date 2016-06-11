@@ -136,7 +136,7 @@ def extractSingleInfoFromImageAllInOneFile(image_related_comprehensive_file, inf
 			for key in sorted(image_info_dictionary.keys()):
 				for elem in image_info_dictionary[key]:
 					fout.write("{0}\t{1}\n".format(key, elem))
-#xtractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_upvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_upvotes.txt")
-extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_downvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_downvotes.txt")
-extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "total_votes", DEFAULT_OUTPUT_FOLDER + "images_with_total_votes.txt")
-extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "score", DEFAULT_OUTPUT_FOLDER + "images_with_score.txt")
+#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_upvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_upvotes.txt")
+#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_downvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_downvotes.txt")
+#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "total_votes", DEFAULT_OUTPUT_FOLDER + "images_with_total_votes.txt")
+#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "score", DEFAULT_OUTPUT_FOLDER + "images_with_score.txt")
