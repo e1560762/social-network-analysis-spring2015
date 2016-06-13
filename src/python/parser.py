@@ -40,6 +40,16 @@ DEFAULT_OUTPUT_FOLDER = "/home/arcelik/projects/MiniProjects/social-network-anal
 DEFAULT_PAJEK_RELATED_FOLDER = "/home/arcelik/projects/MiniProjects/social-network-analysis-spring2015/excluded/pajek/"
 SAMPLE_DATAFILE_FOR_PAJEK_POSITIONS = {"image_id" : 0, "occurence_count" : 1}
 SORT_MODE = {'not_sorted' : 0, 'ascending' : 1, 'descending' : 2}
+COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS = {
+												"real_image_id" : 0,
+												"pajek_image_id" : 1,
+												"subreddit_name" : 2,
+												"pajek_subreddit_id" : 3,
+												"number_of_upvotes" : 4,
+												"number_of_downvotes" : 5,
+												"total_votes" : 6,
+												"score" : 7
+											}
 
 def readSubredditFromGzip(file_path, column_separator, output_file):
 	separated_line = []
@@ -67,7 +77,7 @@ def readSubredditFromGzip(file_path, column_separator, output_file):
 		fout.write("Subreddit ID\tSubreddit Name\n")
 		for (subreddit_id,subreddit) in enumerate(sorted(subreddit_list)):
 			fout.write("{0}\t{1}\n".format(subreddit_id+1, subreddit))
-#readSubredditFromGzip(REDDIT_GZIP_FILE_PATH, REDDIT_GZIP_COLUMN_SEPARATOR, DEFAULT_OUTPUT_FOLDER + "subreddits_with_ids.txt")
+# readSubredditFromGzip(REDDIT_GZIP_FILE_PATH, REDDIT_GZIP_COLUMN_SEPARATOR, DEFAULT_OUTPUT_FOLDER + "subreddits_with_ids.txt")
 
 def loadSubredditsFromFile(subreddit_file):
 	subreddit_list = []
@@ -114,7 +124,7 @@ def readImageidRelatedInfoFromGzip(file_path, column_separator, output_file):
 			except:
 	 			print line
 	fout.close()
-#readImageidRelatedInfoFromGzip(REDDIT_GZIP_FILE_PATH, REDDIT_GZIP_COLUMN_SEPARATOR, DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt")
+# readImageidRelatedInfoFromGzip(REDDIT_GZIP_FILE_PATH, REDDIT_GZIP_COLUMN_SEPARATOR, DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt")
 
 def extractSingleInfoFromImageAllInOneFile(image_related_comprehensive_file, info_to_be_extracted, output_file):
 	image_info_dictionary = {}
@@ -143,10 +153,10 @@ def extractSingleInfoFromImageAllInOneFile(image_related_comprehensive_file, inf
 			for key in sorted(image_info_dictionary.keys()):
 				for elem in image_info_dictionary[key]:
 					fout.write("{0}\t{1}\n".format(key, elem))
-#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_upvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_upvotes.txt")
-#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_downvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_downvotes.txt")
-#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "total_votes", DEFAULT_OUTPUT_FOLDER + "images_with_total_votes.txt")
-#extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "score", DEFAULT_OUTPUT_FOLDER + "images_with_score.txt")
+# extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_upvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_upvotes.txt")
+# extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "number_of_downvotes", DEFAULT_OUTPUT_FOLDER + "images_with_number_of_downvotes.txt")
+# extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "total_votes", DEFAULT_OUTPUT_FOLDER + "images_with_total_votes.txt")
+# extractSingleInfoFromImageAllInOneFile(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", "score", DEFAULT_OUTPUT_FOLDER + "images_with_score.txt")
 
 def extractNumberOfTiesPerSubreddit(image_related_comprehensive_file, output_file):
 	images_with_number_of_ties_dict = {}
@@ -171,7 +181,7 @@ def extractNumberOfTiesPerSubreddit(image_related_comprehensive_file, output_fil
 		for image in sorted(images_with_number_of_ties_dict.keys()):
 			for subr, count in images_with_number_of_ties_dict[image].iteritems():
 				fout.write("{0}\t{1}\t{2}\n".format(image, subr, count))
-#extractNumberOfTiesPerSubreddit(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", DEFAULT_OUTPUT_FOLDER + "image_subreddit_occurences.txt")
+# extractNumberOfTiesPerSubreddit(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", DEFAULT_OUTPUT_FOLDER + "image_subreddit_occurences.txt")
 
 def extractNumberOfTiesPerImage(image_related_comprehensive_file, output_file):
 	images_with_number_of_ties_dict = {}
@@ -191,7 +201,7 @@ def extractNumberOfTiesPerImage(image_related_comprehensive_file, output_file):
 	with open(output_file, "w") as fout:
 		for image in sorted(images_with_number_of_ties_dict.keys()):
 			fout.write("{0}\t{1}\n".format(image, images_with_number_of_ties_dict[image]))
-#extractNumberOfTiesPerImage(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", DEFAULT_OUTPUT_FOLDER + "image_total_occurences.txt")
+# extractNumberOfTiesPerImage(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", DEFAULT_OUTPUT_FOLDER + "image_total_occurences.txt")
 def getSubredditTiesToImages(image_subreddit_occurences_file, output_file):
 	subreddit_to_image_tie_dict = {}
 	splitted_line = []
@@ -223,7 +233,7 @@ def getSubredditTiesToImages(image_subreddit_occurences_file, output_file):
 					fout.write("\t{0}\t{1}".format(img, cnt))
 			fout.write("\n")
 
-getSubredditTiesToImages(DEFAULT_OUTPUT_FOLDER + "image_subreddit_occurences.txt", DEFAULT_OUTPUT_FOLDER + "subreddit_images_occurences.txt")
+# getSubredditTiesToImages(DEFAULT_OUTPUT_FOLDER + "image_subreddit_occurences.txt", DEFAULT_OUTPUT_FOLDER + "subreddit_images_occurences.txt")
 
 ############# Pajek project file related methods are defined below. #############
 def getSelectedImagesFromSampleFile(selected_sample_file, sort_mode):
@@ -303,3 +313,69 @@ def extractComprehensiveDataForPajekFromSelected(selected_sample_file, image_rel
 
 #img_count, subr_count = extractComprehensiveDataForPajekFromSelected(DEFAULT_PAJEK_RELATED_FOLDER + "images_with_number_of_ties.txt", DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data.txt", SORT_MODE['ascending'])
 #print img_count, subr_count # 295 154
+
+def calculatePajekSubredditIdsFromImageComprehensive(image_related_comprehensive_file, number_of_images, sort_mode):
+	splitted_line = []
+	subreddit_list = []
+	subreddits_with_ids = {}
+	image_id = -1
+	subreddit_name = ""
+
+	with open(image_related_comprehensive_file, "r") as fin:
+		fin.readline()
+		for line in fin:
+			splitted_line = line.strip().split("\t")
+			try:
+				image_id = int(splitted_line[IMAGE_RELATED_INFO_FILE_MODE['image_id']])
+				subreddit_name = splitted_line[IMAGE_RELATED_INFO_FILE_MODE['subreddit']]
+				if image_id in real_image_ids and subreddit_name not in subreddit_list:
+					subreddit_list.append(subreddit_name)
+			except:
+				print line.strip()
+
+	if sort_mode == SORT_MODE['ascending']:
+		for ind,subr in enumerate(sorted(subreddit_list)):
+			subreddits_with_ids[subr] = ind + 1 + number_of_images
+	elif sort_mode == SORT_MODE['descending']:
+		for ind,subr in enumerate(reversed(sorted(subreddit_list))):
+			subreddits_with_ids[subr] = ind + 1 + number_of_images
+	else:
+		for ind,subr in subreddit_list:
+			subreddits_with_ids[subr] = ind + 1 + number_of_images
+	return subreddits_with_ids
+
+# subreddits_with_pajek_ids = calculatePajekSubredditIdsFromImageComprehensive(DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", 295, SORT_MODE['ascending'])
+def createPajekProjectFileFromPajekComprehensive(comprehensive_pajek_data_file, number_of_images, number_of_subreddits, vote_field, output_file):
+	splitted_line = []
+	subreddits_with_pajek_ids_dict = {}
+
+	with open(comprehensive_pajek_data_file, 'r') as fin:
+			fin.readline()
+			for line in fin:
+				splitted_line = line.strip().split('\t')
+				subreddits_with_pajek_ids_dict[int(splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_subreddit_id']])] = splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['subreddit_name']]
+	
+	with open(output_file, 'w') as fout:
+		fout.write("*Network Images.net [2-mode]\n")
+		fout.write("*Vertices\t{0}\t{1}\n".format(number_of_images+number_of_subreddits, number_of_images))
+		image_id_counter = 1
+		
+		while image_id_counter <= number_of_images:
+			fout.write("\t{0} \"Image_{1}\"\n".format(image_id_counter, image_id_counter))
+			image_id_counter += 1
+
+		for subreddit_id in sorted(subreddits_with_pajek_ids_dict.keys()):
+			fout.write("\t{0} \"{1}\"\n".format(subreddit_id, subreddits_with_pajek_ids_dict[subreddit_id]))
+		
+		fout.write("*Arcs\n*Edges\n")
+
+		with open(comprehensive_pajek_data_file, 'r') as fin:
+			fin.readline()
+			for line in fin:
+				splitted_line = line.strip().split('\t')
+				fout.write("\t{0} {1} {2}\n".format(splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_image_id']],
+													splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_subreddit_id']],
+													splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS[vote_field]]
+													))
+
+createPajekProjectFileFromPajekComprehensive(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data.txt", 295, 154, 'number_of_upvotes', DEFAULT_PAJEK_RELATED_FOLDER + "Images_30_to_50_ties.paj")
