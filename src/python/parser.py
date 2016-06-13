@@ -311,7 +311,7 @@ def extractComprehensiveDataForPajekFromSelected(selected_sample_file, image_rel
 				print line.strip()
 	return (number_of_images, len(subreddit_list))
 
-#img_count, subr_count = extractComprehensiveDataForPajekFromSelected(DEFAULT_PAJEK_RELATED_FOLDER + "images_with_number_of_ties.txt", DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data.txt", SORT_MODE['ascending'])
+#img_count, subr_count = extractComprehensiveDataForPajekFromSelected(DEFAULT_PAJEK_RELATED_FOLDER + "images_with_number_of_ties_2.txt", DEFAULT_OUTPUT_FOLDER + "image_related_info_all_in_one.txt", DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data_2.txt", SORT_MODE['ascending'])
 #print img_count, subr_count # 295 154
 
 def calculatePajekSubredditIdsFromImageComprehensive(image_related_comprehensive_file, number_of_images, sort_mode):
@@ -378,4 +378,36 @@ def createPajekProjectFileFromPajekComprehensive(comprehensive_pajek_data_file, 
 													splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS[vote_field]]
 													))
 
-createPajekProjectFileFromPajekComprehensive(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data.txt", 295, 154, 'number_of_upvotes', DEFAULT_PAJEK_RELATED_FOLDER + "Images_30_to_50_ties.paj")
+#createPajekProjectFileFromPajekComprehensive(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data_2.txt", img_count, subr_count, 'number_of_upvotes', DEFAULT_PAJEK_RELATED_FOLDER + "Images_with_65_img.paj")
+
+def loadNumberOfSubscribers(subscriber_count_file):
+	subscriber_count_dict = {}
+	separated_line = []
+
+	with open(subscriber_count_file, 'r') as fin:
+		for line in fin:
+			separated_line = line.strip().split('\t')
+			subscriber_count_dict[separated_line[0]] = int(separated_line[1])
+
+	return subscriber_count_dict
+
+def extractNumberOfSubscribersOfSubredditsFromPajekComprehensive(comprehensive_pajek_data_file, subscriber_count_file, output_file):
+	subscriber_info_dict = loadNumberOfSubscribers(subscriber_count_file)
+	separated_line = []
+	distinct_subreddit_names = []
+
+	fin = open(comprehensive_pajek_data_file, 'r')
+
+	fin.readline()
+	for line in fin:
+		separated_line = line.strip().split('\t')
+		if separated_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['subreddit_name']] not in distinct_subreddit_names:
+			distinct_subreddit_names.append(separated_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['subreddit_name']])
+	fin.close()
+	
+	fout = open(output_file, 'w')
+	for subr in distinct_subreddit_names:
+		fout.write("{0}\t{1}\n".format(subr, subscriber_info_dict[subr]))
+	fout.close()
+
+extractNumberOfSubscribersOfSubredditsFromPajekComprehensive(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data_2.txt", DEFAULT_OUTPUT_FOLDER + "subreddits_with_subscribers.txt", DEFAULT_PAJEK_RELATED_FOLDER + "subscriber_info_2.txt")
