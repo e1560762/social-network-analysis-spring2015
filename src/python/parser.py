@@ -410,4 +410,37 @@ def extractNumberOfSubscribersOfSubredditsFromPajekComprehensive(comprehensive_p
 		fout.write("{0}\t{1}\n".format(subr, subscriber_info_dict[subr]))
 	fout.close()
 
-extractNumberOfSubscribersOfSubredditsFromPajekComprehensive(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data_2.txt", DEFAULT_OUTPUT_FOLDER + "subreddits_with_subscribers.txt", DEFAULT_PAJEK_RELATED_FOLDER + "subscriber_info_2.txt")
+#extractNumberOfSubscribersOfSubredditsFromPajekComprehensive(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data_2.txt", DEFAULT_OUTPUT_FOLDER + "subreddits_with_subscribers.txt", DEFAULT_PAJEK_RELATED_FOLDER + "subscriber_info_2.txt")
+
+def loadImageIdsFromPajekSample(pajek_distinct_image_id_file):
+	splitted_line = []
+	image_set = []
+
+	with open(pajek_distinct_image_id_file, 'r') as fin:
+		for line in fin:
+			splitted_line = line.strip().split('\t')
+			if splitted_line[0] not in image_set:
+				image_set.append(splitted_line[0])
+	return image_set
+
+def loadOverallVotingStatistics(overall_statistics_file):
+	splitted_line = []
+	overall_statistics_dict = {}
+
+	with open(overall_statistics_file, 'r') as fin:
+		fin.readline()
+		for line in fin:
+			splitted_line = line.strip().split('\t')
+			overall_statistics_dict[splitted_line[0]] = int(splitted_line[1])
+
+	return overall_statistics_dict
+
+
+def extractOverallVotingStatisticsForPajekSample(image_set, overall_statistics_dict, output_file):
+	with open(output_file, 'w') as fout:
+		for img in image_set:
+			fout.write("{0}\t{1}\n".format(img, overall_statistics_dict[img]))
+
+image_list = loadImageIdsFromPajekSample(DEFAULT_PAJEK_RELATED_FOLDER + "images_with_number_of_ties_2.txt")
+overall_statistics_map = loadOverallVotingStatistics(DEFAULT_OUTPUT_FOLDER + "images_with_total_votes.txt")
+extractOverallVotingStatisticsForPajekSample(image_list, overall_statistics_map, DEFAULT_PAJEK_RELATED_FOLDER + "total_votes_stats_sample_2.txt")
