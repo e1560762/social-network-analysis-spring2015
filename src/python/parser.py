@@ -380,6 +380,26 @@ def createPajekProjectFileFromPajekComprehensive(comprehensive_pajek_data_file, 
 
 #createPajekProjectFileFromPajekComprehensive(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data_2.txt", img_count, subr_count, 'number_of_upvotes', DEFAULT_PAJEK_RELATED_FOLDER + "Images_with_65_img.paj")
 
+def extractNumberOfTiesBetweenImagesAndSubredditsAsPajekIDs(comprehensive_pajek_data_file, output_file):
+	image_to_subreddit_occurence_dict = {}
+	separated_line = []
+
+	with open(comprehensive_pajek_data_file, 'r') as fin:
+		fin.readline()
+		for line in fin:
+			splitted_line = line.strip().split('\t')
+			try:
+				image_to_subreddit_occurence_dict[splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_image_id']]][splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_subreddit_id']]] = image_to_subreddit_occurence_dict[splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_image_id']]].get(splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_subreddit_id']], 0) + 1
+			except:
+				image_to_subreddit_occurence_dict[splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_image_id']]] = {splitted_line[COMPREHENSIVE_PAJEK_RELATED_FILE_POSITIONS['pajek_subreddit_id']] : 1}
+
+	with open(output_file, 'w') as fout:
+		for img in sorted(image_to_subreddit_occurence_dict.keys()):
+			for subr, occurence_count in image_to_subreddit_occurence_dict[img].iteritems():
+				fout.write("\t{0} {1} {2}\n".format(img, subr, occurence_count))
+
+extractNumberOfTiesBetweenImagesAndSubredditsAsPajekIDs(DEFAULT_PAJEK_RELATED_FOLDER + "comprehensive_pajek_data_2.txt", DEFAULT_PAJEK_RELATED_FOLDER + "pajek_relations_in_terms_of_ties_2.txt")
+
 def loadNumberOfSubscribers(subscriber_count_file):
 	subscriber_count_dict = {}
 	separated_line = []
@@ -441,6 +461,6 @@ def extractOverallVotingStatisticsForPajekSample(image_set, overall_statistics_d
 		for img in image_set:
 			fout.write("{0}\t{1}\n".format(img, overall_statistics_dict[img]))
 
-image_list = loadImageIdsFromPajekSample(DEFAULT_PAJEK_RELATED_FOLDER + "images_with_number_of_ties_2.txt")
-overall_statistics_map = loadOverallVotingStatistics(DEFAULT_OUTPUT_FOLDER + "images_with_total_votes.txt")
-extractOverallVotingStatisticsForPajekSample(image_list, overall_statistics_map, DEFAULT_PAJEK_RELATED_FOLDER + "total_votes_stats_sample_2.txt")
+#image_list = loadImageIdsFromPajekSample(DEFAULT_PAJEK_RELATED_FOLDER + "images_with_number_of_ties_2.txt")
+#overall_statistics_map = loadOverallVotingStatistics(DEFAULT_OUTPUT_FOLDER + "images_with_total_votes.txt")
+#extractOverallVotingStatisticsForPajekSample(image_list, overall_statistics_map, DEFAULT_PAJEK_RELATED_FOLDER + "total_votes_stats_sample_2.txt")
